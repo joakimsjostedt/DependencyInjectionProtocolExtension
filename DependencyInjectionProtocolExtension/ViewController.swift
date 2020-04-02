@@ -1,42 +1,40 @@
 //
 //  ViewController.swift
-//  testillitest
+//  TestingProtocols
 //
-//  Created by Joakim Sjöstedt on 2020-03-23.
+//  Created by Joakim Sjöstedt on 2020-04-02.
 //  Copyright © 2020 Joakim Sjöstedt. All rights reserved.
 //
 
 import UIKit
 
 class BaseClass {
-    
-    var myString: String = "All the way from the back!"
+    var baseString: String = "All the way from the back!"
 }
 
-class InheritingClass: BaseClass {
-    
-    func inheritingFuntion() {
-        print(myString)
+protocol AnotherClassProtocol {
+    func anotherFunc()
+}
+
+class AnotherClass: BaseClass, AnotherClassProtocol {
+    func anotherFunc() {
+        print(baseString)
     }
 }
 
-protocol InjectionProtocol {
-    var instance: InheritingClass { get }
+protocol MyProtocol {
+    var instance: AnotherClassProtocol { get }
 }
 
-extension InjectionProtocol {
-    var instance: InheritingClass {
-        return InheritingClass()
-    }
+extension MyProtocol {
+    var instance: AnotherClassProtocol { return AnotherClass() }
 }
 
-class ViewController: UIViewController, InjectionProtocol {
-
+class ViewController: UIViewController, MyProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        instance.inheritingFuntion()
-
+        
+        instance.anotherFunc()
     }
 }
 
